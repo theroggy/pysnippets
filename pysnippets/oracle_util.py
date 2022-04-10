@@ -67,7 +67,7 @@ def read_oracle(
         connection.close()
 
     # Convert WKB column to proper geometry column
-    geodata_gdf["geometry"] = gpd.GeoSeries(geodata_gdf["GEOMETRY_WKB"].apply(lambda x: sh_load_wkb(x)))
+    geodata_gdf["geometry"] = gpd.GeoSeries.from_wkb(geodata_gdf["GEOMETRY_WKB"])
     del geodata_gdf["GEOMETRY_WKB"]
 
     # Add crs
