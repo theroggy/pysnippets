@@ -127,3 +127,30 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# General
+# -------
+local/
+
+# python
+# ------
+*.pyc
+
+# VSCode
+# ------
+# Some inspiration from:
+# https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+
+.vs/*
+.vscode/*
+!.vscode/settings_template.jsonc
+!.vscode/tasks.json
+!.vscode/launch_template.jsonc
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
