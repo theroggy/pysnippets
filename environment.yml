@@ -1,0 +1,16 @@
+name: pysnippets
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  # required
+  - geofileops
+  - geopandas
+  - matplotlib
+  - pygeoops
+  - shapely
+  # linting
+  - black
+  - flake8
+  - pre-commit
