@@ -16,6 +16,6 @@ gdf = gpd.GeoDataFrame(geometry=[intersection_nogridsize, poly3])  # type: ignor
 gdf.plot()
 plt.show()
 
-gdf.geometry.array.data = shapely.set_precision(gdf.geometry.array.data, grid_size=1)
+gdf.geometry = shapely.set_precision(gdf.geometry.array, grid_size=1)
 gdf.plot()
 plt.show()
