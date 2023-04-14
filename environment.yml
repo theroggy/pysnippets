@@ -9,6 +9,7 @@ dependencies:
   - geopandas
   - matplotlib
   - pygeoops
+  - qgis
   - shapely
   # linting
   - black
