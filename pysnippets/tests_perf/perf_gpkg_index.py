@@ -302,7 +302,7 @@ if not path.exists():
             FROM bboxes
            {orderby};
     """
-    sqlite_util.execute_sql(path, [create_rtree, fill_rtree], use_spatialite=False)
+    sqlite_util.execute_sql(path, fill_rtree, use_spatialite=False)
     print(f"fill test table rtree index in {path.name} took {timer()-start}")
 
 # Create pure sqlite test file, then add one using only sqlite via sqlite.exe
