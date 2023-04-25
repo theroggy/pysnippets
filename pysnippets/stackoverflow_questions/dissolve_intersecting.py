@@ -26,6 +26,7 @@ to_dissolve_gdf = gdf.loc[
 no_dissolve_gdf = gdf.loc[~gdf.index.isin(to_dissolve_gdf.index)]
 
 # Compile + plot the result
+assert isinstance(to_dissolve_gdf, gpd.GeoDataFrame)
 result_gdf = pd.concat([to_dissolve_gdf.dissolve(), no_dissolve_gdf])
 result_gdf.plot(categorical=True, cmap="Set1", alpha=0.66)
 plt.show()
