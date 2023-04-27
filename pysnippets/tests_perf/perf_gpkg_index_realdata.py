@@ -1,15 +1,14 @@
-import os
 import shutil
 from pathlib import Path
-import subprocess
 import tempfile
 from timeit import default_timer as timer
 
 from geofileops.util import _sqlite_util as sqlite_util
 import geopandas as gpd
 from osgeo import gdal
-import shapely
 
+
+data_dir = Path(tempfile.gettempdir()) / "perf_gpkg_index_realdata"
 force = True
 # orderby = "ORDER BY random()"
 orderby = ""
@@ -22,7 +21,6 @@ assert isinstance(gdf, gpd.GeoDataFrame)
 print(f"Test dataset with {len(gdf)} rows ready")
 
 # Prepare output dir
-data_dir = Path(tempfile.gettempdir())
 if force:
     shutil.rmtree(data_dir, ignore_errors=True)
 data_dir.mkdir(exist_ok=True, parents=True)
@@ -168,7 +166,7 @@ if not path.exists():
 
 # Create the gpkg test file without spatial index, then add one using only sqlite
 path = data_dir / "test_gpkg-gdal_rtree-sqlite.gpkg"
-path.unlink(missing_ok=True)
+# path.unlink(missing_ok=True)
 if not path.exists():
     start = timer()
     gdf.to_file(path, SPATIAL_INDEX="NO", engine="pyogrio")
@@ -205,6 +203,7 @@ if not path.exists():
 
 # Create the gpkg test file without spatial index, then add one using only sqlite
 path = data_dir / "test_gpkg-spatialite_rtree-sqlite.gpkg"
+# path.unlink(missing_ok=True)
 if not path.exists():
     start = timer()
     gdf.to_file(path, SPATIAL_INDEX="NO", engine="pyogrio")
