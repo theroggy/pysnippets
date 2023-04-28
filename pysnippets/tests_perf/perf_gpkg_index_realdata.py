@@ -207,6 +207,7 @@ if not path.exists():
                  ,ST_MinX("geom") minx, ST_MaxX("geom") maxx
                  ,ST_MinY("geom") miny, ST_MaxY("geom") maxy
             FROM "{path.stem}"
+            ORDER BY ST_MinX("geom"), ST_MinY("geom")
     """
     datasource = gdal.OpenEx(str(path), nOpenFlags=gdal.OF_UPDATE)
     result = datasource.ExecuteSQL(sql_stmt)
@@ -215,22 +216,43 @@ if not path.exists():
     print(f"in {path.name}: copy data to test table with gdal ST_MinX {timer()-start}")
 
     # Create + fill rtree index on test table
-    start = timer()
-    # pragma_cachesize = "PRAGMA cache_size=-5000000"
-    create_rtree = """
-        CREATE VIRTUAL TABLE rtree_testje
-          USING rtree(id, minx, maxx, miny, maxy);
-    """
-    fill_rtree = f"""
-        INSERT INTO "rtree_testje"
-           SELECT fid, minx, maxx, miny, maxy
-            FROM "testje"
-            {orderby}
-    """
-    sqlite_util.execute_sql(
-        path, [create_rtree, fill_rtree], use_spatialite=False
-    )
-    print(f"create + fill test table rtree index in {path.name} took {timer()-start}")
+    test_combinations = [
+        (None, ""),
+        (-5000000, ""),
+        # (None, "ORDER BY random()"),
+        # (-5000000, "ORDER BY random()"),
+    ]
+
+    for cur_cachesize, cur_orderby in test_combinations:
+        start = timer()
+        sql_stmts = []
+
+        # Prepare rtree name based on params
+        rtree_name = "rtree_testje"
+        if cur_cachesize is not None:
+            rtree_name = f"{rtree_name}_{cur_cachesize}"
+            sql_stmts.append(f"PRAGMA cache_size={cur_cachesize}")
+        if cur_orderby != "":
+            rtree_name = f"{rtree_name}_orderby"
+
+        # Prepare statements
+        create_rtree = f"""
+            CREATE VIRTUAL TABLE "{rtree_name}"
+            USING rtree(id, minx, maxx, miny, maxy);
+        """
+        sql_stmts.append(create_rtree)
+        fill_rtree = f"""
+            INSERT INTO "{rtree_name}"
+            SELECT fid, minx, maxx, miny, maxy
+                FROM "testje"
+                {cur_orderby}
+        """
+        sql_stmts.append(fill_rtree)
+        sqlite_util.execute_sql(path, sql_stmts, use_spatialite=False)
+        print(
+            f"create + fill test rtree index {rtree_name} in {path.name} "
+            f"took {timer()-start}"
+        )
 
 # Create the gpkg test file without spatial index, then add one using only sqlite
 path = data_dir / "test_gpkg-spatialite_rtree-sqlite.gpkg"

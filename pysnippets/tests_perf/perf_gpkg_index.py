@@ -35,8 +35,9 @@ data_dir = Path(tempfile.gettempdir()) / "perf_gpkg_index"
 force = False
 orderby = ""
 # orderby = "ORDER BY random()"
+# orderby = "ORDER BY minx, maxx, miny, maxy"
 cache_size = None
-# cache_size = -50000
+# cache_size = -500000
 print(f"orderby used: <{orderby}>")
 print(f"cache_size used: <{cache_size}>")
 gdf = None
@@ -378,7 +379,7 @@ if not path.exists():
     start = timer()
     sql_stmt = ""
     if cache_size is not None:
-        sql_stmt += "PRAGMA cache_size={cache_size};\n"
+        sql_stmt += f"PRAGMA cache_size={cache_size};\n"
     sql_stmt += f"""
         INSERT INTO bboxes_rtree
           SELECT id, minx, maxx, miny, maxy
