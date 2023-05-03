@@ -1,14 +1,14 @@
 import geopandas as gpd
 import pandas as pd
 
-countries_gdf = gpd.read_file(gpd.datasets.get_path("nybb"))
+gdf = gpd.read_file(gpd.datasets.get_path("nybb"))
 
 result_gdf = None
-for row in countries_gdf.itertuples():
-    cur_country_gdf = gpd.GeoDataFrame([row], crs=countries_gdf.crs)
-    other_countries_gdf = countries_gdf[countries_gdf.index != row.Index]
-    nearest_other_gdf = cur_country_gdf.sjoin_nearest(
-        other_countries_gdf, distance_col="distance"
+for row in gdf.itertuples():
+    row_gdf = gpd.GeoDataFrame([row], crs=gdf.crs)
+    other_gdf = gdf[gdf.index != row.Index]
+    nearest_other_gdf = row_gdf.sjoin_nearest(
+        other_gdf, distance_col="distance"
     )
     if result_gdf is None:
         result_gdf = nearest_other_gdf
