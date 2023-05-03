@@ -1,22 +1,22 @@
 import geopandas as gpd
 import pandas as pd
 
-nybb_gdf = gpd.read_file(gpd.datasets.get_path("nybb"))
+# path = "states.shp"
+path = gpd.datasets.get_path("nybb")
+gdf = gpd.read_file(path)
 
 result_gdf = None
-for row in nybb_gdf.itertuples():
-    other_boro_gdf = nybb_gdf[nybb_gdf.index < row.Index]
-    distances = other_boro_gdf.geometry.distance(row.geometry)
-    distances_gdf = other_boro_gdf.copy()
+for row in gdf.itertuples():
+    other_gdf = gdf[gdf.index < row.Index]
+    distances = other_gdf.geometry.distance(row.geometry)
+    distances_gdf = other_gdf.copy()
     distances_gdf["distance"] = distances
-    distances_gdf["from_index"] = row.Index
-    distances_gdf["from_BoroName"] = row.BoroName
+    for name, value in row._asdict().items():
+        distances_gdf[f"to_{name}"] = value
 
     if result_gdf is None:
         result_gdf = distances_gdf
     else:
         result_gdf = pd.concat([result_gdf, distances_gdf])
 
-print(
-    result_gdf[["BoroName", "from_BoroName", "distance"]].to_string(index=False)
-)
+print(result_gdf[["BoroName", "to_BoroName", "distance"]].to_string(index=False))
