@@ -5,6 +5,9 @@ import pandas as pd
 path = gpd.datasets.get_path("nybb")
 gdf = gpd.read_file(path)
 
+# Convert to "USA Contiguous Equidistant Conic" to get OK distances for USA
+# gdf = gdf.to_crs("ESRI:102005")
+
 result_gdf = None
 for row in gdf.itertuples():
     other_gdf = gdf[gdf.index < row.Index]
