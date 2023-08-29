@@ -9,10 +9,12 @@ geom_collection = shapely.GeometryCollection(
         shapely.Polygon([(5, 0), (20, 0), (20, 10), (5, 10), (5, 0)]),
     ]
 )
+print(f"versions: shapely: {shapely.__version__}, geos-C-api: {shapely.geos_capi_version_string}")
+
 print(f"is simple poly valid? {shapely.is_valid_reason(geom)}")
 print(f"is collection valid? {shapely.is_valid_reason(geom_collection)}")
 
 try:
     result = shapely.difference(geom, geom_collection)
 except Exception as ex:
-    print(ex)
+    print(f"Exception raised: {ex}")
