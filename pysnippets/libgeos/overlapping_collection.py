@@ -1,0 +1,18 @@
+import shapely
+
+# Difference of geom: 1 polygon, geom: GeometryCollection of 2 overlapping polygons
+# Result: TopologyException
+geom = shapely.Polygon([(0, 0), (50, 0), (50, 50), (0, 50), (0, 0)])
+geom_collection = shapely.GeometryCollection(
+    [
+        shapely.Polygon([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]),
+        shapely.Polygon([(5, 0), (20, 0), (20, 10), (5, 10), (5, 0)]),
+    ]
+)
+print(f"is simple poly valid? {shapely.is_valid_reason(geom)}")
+print(f"is collection valid? {shapely.is_valid_reason(geom_collection)}")
+
+try:
+    result = shapely.difference(geom, geom_collection)
+except Exception as ex:
+    print(ex)
