@@ -1,16 +1,18 @@
 -- Create test data table
 -- ----------------------
 -- Load zorder extension
-select load_extension('zorder.dll');
+SELECT load_extension('zorder.dll');
+
+--DROP TABLE bboxes;
+--DROP TABLE bboxes_rtree;
 
 -- Create table for bboxes
-CREATE TABLE bboxes_zorder (
+CREATE TABLE bboxes (
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   minx FLOAT,
   maxx FLOAT,
   miny FLOAT,
-  maxy FLOAT,
-  zorder FLOAT
+  maxy FLOAT
 );
 
 -- Fill the table with 1 million bboxes
@@ -43,16 +45,10 @@ INSERT INTO bboxes_rtree
 INSERT INTO bboxes_rtree
   SELECT id, minx, maxx, miny, maxy FROM bboxes order by random();
 
--- 26 s met 2 MB cache
--- 20.4 s met 50 MB cache
-INSERT INTO bboxes_rtree
-  SELECT id, minx, maxx, miny, maxy FROM bboxes order by zorder(minx, miny);
-
 -- 11.6 s
 INSERT INTO bboxes_rtree
-  SELECT id, minx, maxx, miny, maxy FROM bboxes order by zorder(minx+(maxx-minx)/2, miny+(maxy-miny)/2) DESC;
-
-DROP table bboxes_rtree;
+  SELECT id, minx, maxx, miny, maxy 
+  FROM bboxes order by zorder(minx+(maxx-minx)/2, miny+(maxy-miny)/2) DESC;
 
 -- BULK RTREE TEST
 -- ---------------
@@ -91,10 +87,11 @@ INSERT INTO bboxes_rtree_rowid_bulk
           ORDER BY zorder(minx+(maxx-minx)/2, miny+(maxy-miny)/2)
          );
 
---delete from bboxes_rtree_rowid_bulk;
---select nodeno, count(*) nb from bboxes_rtree_rowid_bulk group by nodeno order by nb asc;
+--DELETE FROM bboxes_rtree_rowid_bulk;
+--SELECT nodeno, count(*) nb FROM bboxes_rtree_rowid_bulk group by nodeno order by nb asc;
 
--- Determine the MBR of the level 0 nodes based on the leaves + insert in bboxes_rtree_node_bulk
+-- Determine the MBR of the level 0 nodes based on the leaves + insert in 
+-- bboxes_rtree_node_bulk
 -- 0.537 s
 INSERT INTO bboxes_rtree_node_bulk
   SELECT nodeno, 0, min(minx), max(maxx), min(miny), max(maxy)
@@ -106,7 +103,10 @@ INSERT INTO bboxes_rtree_node_bulk
 -- Group level 0 nodes per 50 elements ordered by nodeno
 -- 0.036 s
 INSERT INTO bboxes_rtree_parent_bulk
-  SELECT nodeno, (SELECT MAX(nodeno) FROM bboxes_rtree_node_bulk) + (row_number() over ()-1)/50+1 as parentnode
+  SELECT nodeno
+        ,(SELECT MAX(nodeno) 
+          FROM bboxes_rtree_node_bulk
+         ) + (row_number() over ()-1)/50+1 AS parentnode
     FROM (SELECT rowid, * FROM bboxes_rtree_node_bulk
           WHERE level = 0
           ORDER BY nodeno
@@ -114,7 +114,8 @@ INSERT INTO bboxes_rtree_parent_bulk
 
 --DELETE FROM bboxes_rtree_parent_bulk;
 
--- Determine the MBR of the level 1 nodes based on the level 0 nodes + insert in bboxes_rtree_node_bulk
+-- Determine the MBR of the level 1 nodes based on the level 0 nodes + insert in
+-- bboxes_rtree_node_bulk
 -- 0.019 s
 INSERT INTO bboxes_rtree_node_bulk
   SELECT parentnode, 1, min(minx), max(maxx), min(miny), max(maxy)
@@ -128,13 +129,17 @@ INSERT INTO bboxes_rtree_node_bulk
 -- Group level 1 nodes per 50 elements ordered by nodeno
 -- 0.017 s
 INSERT INTO bboxes_rtree_parent_bulk
-  SELECT nodeno, (SELECT MAX(nodeno) FROM bboxes_rtree_node_bulk) + (row_number() over ()-1)/50+1 as parentnode
+  SELECT nodeno
+        ,(SELECT MAX(nodeno) 
+          FROM bboxes_rtree_node_bulk
+         ) + (row_number() over ()-1)/50+1 as parentnode
     FROM (SELECT rowid, * FROM bboxes_rtree_node_bulk
           WHERE level = 1
           ORDER BY nodeno
          );
 
--- Determine the MBR of the level 2 nodes based on the level 1 nodes + insert in bboxes_rtree_node_bulk
+-- Determine the MBR of the level 2 nodes based on the level 1 nodes + insert in
+-- bboxes_rtree_node_bulk
 -- 0.018 s
 INSERT INTO bboxes_rtree_node_bulk
   SELECT parentnode, 2, min(minx), max(maxx), min(miny), max(maxy)
