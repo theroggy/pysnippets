@@ -1,0 +1,15 @@
+# gpkg
+ogr2ogr -sql "SELECT * FROM parcels WHERE LBLHFDTLT ILIKE 'gras%'" -dialect OGRSQL out.gpkg "https://github.com/geofileops/geofileops/raw/main/tests/data/polygon-parcel.gpkg"
+
+ogr2ogr -sql "SELECT * FROM parcels WHERE LBLHFDTLT ILIKE 'gras%'" -dialect OGRSQL out.gpkg C:\Users\Gebruiker\Documents\GitHub\geofileops\tests\data\polygon-parcel.gpkg
+
+ogr2ogr -sql "SELECT LBLHFDTLT FROM parcels WHERE LBLHFDTLT ILIKE 'gras%'" -dialect OGRSQL out.gpkg C:\Users\Gebruiker\Documents\GitHub\geofileops\tests\data\polygon-parcel.gpkg
+
+ogr2ogr -where "LBLHFDTLT ILIKE 'gras%'" -dialect OGRSQL out.gpkg C:\Users\Gebruiker\Documents\GitHub\geofileops\tests\data\polygon-parcel.gpkg
+
+# shapefile
+ogr2ogr -where "LBLHFDTLT ILIKE 'gras%'" -dialect OGRSQL out.gpkg "/vsizip//vsicurl/https://github.com/theroggy/pysnippets/raw/main/pysnippets/pyogrio/polygon-parcel_31370.zip"
+
+ogr2ogr -where "LBLHFDTLT ILIKE 'gras%'" -dialect SQLITE out.gpkg "/vsizip//vsicurl/https://github.com/theroggy/pysnippets/raw/main/pysnippets/pyogrio/polygon-parcel_31370.zip"
+
+ogr2ogr -sql "SELECT * FROM \"polygon-parcel_31370\" WHERE LBLHFDTLT ILIKE 'gras%'" -dialect SQLITE out.gpkg "/vsizip//vsicurl/https://github.com/theroggy/pysnippets/raw/main/pysnippets/pyogrio/polygon-parcel_31370.zip"
