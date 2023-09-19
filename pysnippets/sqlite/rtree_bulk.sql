@@ -32,23 +32,27 @@ INSERT INTO bboxes(minx, maxx, miny, maxy)
 --PRAGMA cache_size=-50000;
 --PRAGMA cache_size;
 
--- Create and fill up rtree.
+-- Create rtree index
 CREATE VIRTUAL TABLE bboxes_rtree USING rtree(id, minx, maxx, miny, maxy);
 
--- Timings on my laptop on windows
--- 19.4 s
-INSERT INTO bboxes_rtree
-  SELECT id, minx, maxx, miny, maxy FROM bboxes;
+-- Fill up in current order
+-- 19.4 s (timings on my laptop on windows)
+--INSERT INTO bboxes_rtree SELECT id, minx, maxx, miny, maxy FROM bboxes;
 
--- 31.886 s
--- 12.9 s met 50 MB cache
+-- Fill up in random order
+-- 31.886 s with default cache_size = 2 MB
+-- 12.9 s with cache_size = 50 MB
 INSERT INTO bboxes_rtree
   SELECT id, minx, maxx, miny, maxy FROM bboxes order by random();
 
--- 11.6 s
-INSERT INTO bboxes_rtree
-  SELECT id, minx, maxx, miny, maxy 
-  FROM bboxes order by zorder(minx+(maxx-minx)/2, miny+(maxy-miny)/2) DESC;
+-- Fill up in zorder/morton code order
+-- Remark: the DESC sorted insert is faster than random, but I cannot explain why it is
+-- that much slower to insert sorted ASC.
+-- 15.5 s if ordered ASC
+-- 11.6 s if ordered DESC
+--INSERT INTO bboxes_rtree
+--  SELECT id, minx, maxx, miny, maxy 
+--  FROM bboxes order by zorder(minx+(maxx-minx)/2, miny+(maxy-miny)/2) DESC;
 
 -- BULK RTREE TEST
 -- ---------------
