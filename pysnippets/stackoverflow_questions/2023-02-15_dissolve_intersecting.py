@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 script_dir = Path(__file__).resolve().parent
-with open(script_dir / "dissolve_intersecting.geojson", "r") as f:
+with open(script_dir / "2023-02-15_dissolve_intersecting.geojson", "r") as f:
     data = json.load(f)
 
 gdf = gpd.GeoDataFrame.from_features(data["features"])
