@@ -5,11 +5,8 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
 
-script_dir = Path(__file__).resolve().parent
-with open(script_dir / "2023-02-15_dissolve_intersecting.geojson", "r") as f:
-    data = json.load(f)
-
-gdf = gpd.GeoDataFrame.from_features(data["features"])
+url = "https://raw.githubusercontent.com/theroggy/pysnippets/07d778d3ac149b3ba2be22735d0a54bf3d52a6d7/pysnippets/stackoverflow_questions/2023-02-15_dissolve_intersecting.geojson"
+gdf = gpd.read_file(url)
 
 # Calculate intersections within the layer
 intersection_gdf = gdf.overlay(gdf, how="intersection", keep_geom_type=True)
