@@ -8,6 +8,7 @@ dependencies:
   - geofileops
   - geopandas
   - matplotlib
+  - pyarrow
   - pygeoops
   - qgis
   - shapely
