@@ -6,7 +6,9 @@ import pyogrio
 warnings.simplefilter("ignore")
 
 url_shp = "https://github.com/theroggy/pysnippets/raw/main/pysnippets/pyogrio/polygon-parcel_31370.zip"
-url_gpkg = "https://github.com/geofileops/geofileops/raw/main/tests/data/polygon-parcel.gpkg"
+url_gpkg = (
+    "https://github.com/geofileops/geofileops/raw/main/tests/data/polygon-parcel.gpkg"
+)
 wheres = [
     None,
     "LBLHFDTLT LIKE 'Gras%'",
@@ -17,7 +19,7 @@ wheres = [
     "LBLHFDTLT IN ('Hoofdgebouwen', 'Grasklaver')",
     f"ST_Area({{geometrycolumn}}) > 1000",
 ]
-    
+
 for where in wheres:
     for url in [url_shp, url_gpkg]:
         for sql_dialect in [None, "OGRSQL", "SQLITE"]:
@@ -27,8 +29,10 @@ for where in wheres:
                 where_f = where.format(geometrycolumn=geometrycolumn)
             try:
                 df = pyogrio.read_dataframe(url, where=where_f, sql_dialect=sql_dialect)
-                # print(f"\nnb_rows with where: {where}: {len(df)}")
-                # print(df["LBLHFDTLT"].unique())
+                print(f"\nnb_rows with where: {where}: {len(df)}")
+                print(df["LBLHFDTLT"].unique())
             except Exception as ex:
                 name = Path(url).name
-                print(f"Error, where={where_f}, sql_dialect={sql_dialect} on {name}")
+                print(
+                    f"Error, where={where_f}, sql_dialect={sql_dialect} on {name}"
+                )
