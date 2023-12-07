@@ -28,33 +28,17 @@ for n in ns:
 
     t0 = time.time()
     sql = """
-        SELECT ST_Difference(
-                    layer1.geom,
-                    (SELECT ST_UNION(layer2.geom) 
-                       FROM q layer2
-                       JOIN rtree_q_geom layer2tree ON layer2.rowid = layer2tree.id
-                      WHERE layer1tree.minx <= layer2tree.maxx
-                        AND layer1tree.maxx >= layer2tree.minx
-                        AND layer1tree.miny <= layer2tree.maxy
-                        AND layer1tree.maxy >= layer2tree.miny
-                        AND ST_INTERSECTS(layer1.geom, layer2.geom) = 1
-                    )
-               ) AS geom 
-         FROM p layer1
-         JOIN rtree_p_geom layer1tree ON layer1.rowid = layer1tree.id
-    """
-    sql = """
-        SELECT ST_Difference(
-                    layer1.geom,
-                    (SELECT ST_UNION(layer2.geom) 
-                       FROM q layer2
-                       JOIN rtree_q_geom layer2tree ON layer2.rowid = layer2tree.id
-                      WHERE ST_MinX(layer1.geom) <= layer2tree.maxx
-                        AND ST_MaxX(layer1.geom) >= layer2tree.minx
-                        AND ST_MinY(layer1.geom) <= layer2tree.maxy
-                        AND ST_MaxY(layer1.geom) >= layer2tree.miny
-                        AND ST_INTERSECTS(layer1.geom, layer2.geom) = 1
-                    )
+        SELECT (SELECT IIF(ST_UNION(layer2.geom) IS NULL,
+                           layer1.geom,
+                           ST_Difference(layer1.geom, ST_UNION(layer2.geom))
+                       )
+                  FROM q layer2
+                  JOIN rtree_q_geom layer2tree ON layer2.rowid = layer2tree.id
+                 WHERE ST_MinX(layer1.geom) <= layer2tree.maxx
+                   AND ST_MaxX(layer1.geom) >= layer2tree.minx
+                   AND ST_MinY(layer1.geom) <= layer2tree.maxy
+                   AND ST_MaxY(layer1.geom) >= layer2tree.miny
+                   AND ST_INTERSECTS(layer1.geom, layer2.geom) = 1
                ) AS geom 
          FROM p layer1
     """
