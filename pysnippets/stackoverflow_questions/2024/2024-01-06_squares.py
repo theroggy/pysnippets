@@ -5,7 +5,7 @@ import geopandas as gpd
 
 
 def define_spot_grid(gdf_base_grid, size_base, size_swath):
-    # First create grid with the bigger spots, covering the bounds of gdf_base_grid
+    # First create grid with the bigger spots, covering the bounds of gdf_base_grid.
     bounds = gdf_base_grid.total_bounds
     bigger_spots = []
     for xmin in np.arange(bounds[0], bounds[2], size_swath):
@@ -15,7 +15,7 @@ def define_spot_grid(gdf_base_grid, size_base, size_swath):
             )
     bigger_spots_gdf = gpd.GeoDataFrame(geometry=bigger_spots, crs=gdf_base_grid.crs)
 
-    # Check for echt bigger spot how many small spots intersect with it. Join with
+    # Check for each bigger spot how many small spots intersect with it. Join with
     # centroids of base grid to avoid spots that only touch being counted.
     base_grid_centroid_gdf = gpd.GeoDataFrame(
         geometry=gdf_base_grid.centroid, crs=gdf_base_grid.crs
@@ -25,7 +25,7 @@ def define_spot_grid(gdf_base_grid, size_base, size_swath):
     )
     number_small_in_bigger_df = sjoin_gdf[["index_right"]].groupby(level=0).count()
 
-    # Only keep bigger spots with the minimum needed number small ones in them
+    # Only keep bigger spots with the minimum needed number small ones in them.
     minimum = (size_swath/size_base) ** 2
     indices_to_keep = number_small_in_bigger_df[
         number_small_in_bigger_df.index_right >= minimum
