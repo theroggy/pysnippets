@@ -5,11 +5,14 @@ import geopandas as gpd
 
 
 def define_spot_grid(gdf_base_grid, size_base, size_swath):
-    # First create grid with the bigger spots, covering the bounds of gdf_base_grid.
+    # First create gdf with all possible bigger spots, covering the bounds of
+    # gdf_base_grid.
+    # Remark: because we want to find all possible bigger spots with the number of small
+    # spots asked, the bigger spots will overlap. 
     bounds = gdf_base_grid.total_bounds
     bigger_spots = []
-    for xmin in np.arange(bounds[0], bounds[2], size_swath):
-        for ymin in np.arange(bounds[1], bounds[3], size_swath):
+    for xmin in np.arange(bounds[0], bounds[2], size_base):
+        for ymin in np.arange(bounds[1], bounds[3], size_base):
             bigger_spots.append(
                 shapely.geometry.box(xmin, ymin, xmin + size_swath, ymin + size_swath)
             )
@@ -64,10 +67,17 @@ gdf_base_grid = gpd.GeoDataFrame(
     index=range(len(liste_geo)),
 )
 
+# Calculate for swath size * 2
 size_swath = size_base * 2
 bigger_gdf = define_spot_grid(gdf_base_grid, size_base, size_swath)
+f, ax = plt.subplots()
+gdf_base_grid.plot(ax=ax, facecolor="none")
+bigger_gdf.plot(ax=ax, facecolor="none", edgecolor="red", linewidth=2)
+plt.show()
 
-# Plot result
+# Calculate for swath size * 3
+size_swath = size_base * 3
+bigger_gdf = define_spot_grid(gdf_base_grid, size_base, size_swath)
 f, ax = plt.subplots()
 gdf_base_grid.plot(ax=ax, facecolor="none")
 bigger_gdf.plot(ax=ax, facecolor="none", edgecolor="red", linewidth=2)
