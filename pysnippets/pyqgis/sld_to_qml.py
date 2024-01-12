@@ -1,5 +1,6 @@
 from pathlib import Path
 import tempfile
+
 import qgis.core  # type: ignore
 
 qgs = qgis.core.QgsApplication([], False)
