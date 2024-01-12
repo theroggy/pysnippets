@@ -10,9 +10,10 @@ dependencies:
   - matplotlib
   - pyarrow
   - pygeoops
+  - pyshp
   - qgis
   - shapely
   # linting
-  - black
-  - flake8
+  - black=23
+  - ruff
   - pre-commit
