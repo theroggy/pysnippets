@@ -12,6 +12,7 @@ dependencies:
   - pygeoops
   - pyshp
   - qgis
+  - rasterio
   - shapely
   # linting
   - black=23
