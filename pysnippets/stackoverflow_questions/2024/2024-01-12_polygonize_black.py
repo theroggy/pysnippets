@@ -26,7 +26,7 @@ with rasterio.open(path) as src:
 
     # Plot result
     fig, ax = plt.subplots()
-    ax = rasterio.plot.show(image, ax=ax, transform=src.transform)
+    ax = rasterio.plot.show(image, ax=ax, transform=src.transform, cmap="Greys_r")
 
     for geom in result:
         plot_polygon(geom, ax=ax, color="grey", add_points=False, hatch="/")
