@@ -2,7 +2,11 @@ import geopandas as gpd
 import shapely
 
 gdf = gpd.GeoDataFrame(
-    geometry=[shapely.Polygon([[50.0, 50.0], [50.0, 50.1], [50.1, 50.1], [50.1, 50.0], [50.0, 50.0]])]
+    geometry=[
+        shapely.Polygon(
+            [[50.0, 50.0], [50.0, 50.1], [50.1, 50.1], [50.1, 50.0], [50.0, 50.0]]
+        )
+    ]
 )
 coordinates = shapely.get_coordinates(gdf.geometry[0])
 points = [shapely.Point(coordinate[0], coordinate[1]) for coordinate in coordinates]
