@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import shapely.geometry
 import numpy as np
 import time
+import geofileops as gfo
+
 
 def benchmark():
     np.random.seed(42)
@@ -19,7 +21,11 @@ def benchmark():
         path = Path(f"united_{n}.gpkg")
         if not path.exists():
             p = gpd.GeoSeries(
-                [shapely.geometry.box(j, i, j + 1, i + 1) for i in range(n) for j in range(n)]
+                [
+                    shapely.geometry.box(j, i, j + 1, i + 1)
+                    for i in range(n)
+                    for j in range(n)
+                ]
             )
 
             q = gpd.GeoSeries(
@@ -101,13 +107,15 @@ def benchmark():
             force=True,
         )
         elapsed_gfo.append(time.time() - t0)
-    
+
     # Plots
     plot_timings(ns, elapsed_original, elapsed_rtree_join, [], [])
     plot_timings(ns, [], elapsed_rtree_join, elapsed_rtree_in, elapsed_gfo)
 
 
-def plot_timings(ns, elapsed_original, elapsed_rtree_join, elapsed_rtree_in, elapsed_gfo):
+def plot_timings(
+    ns, elapsed_original, elapsed_rtree_join, elapsed_rtree_in, elapsed_gfo
+):
     # Print all passed results
     plt.figure(figsize=(8, 4))
     if len(elapsed_original) > 0:
@@ -116,16 +124,16 @@ def plot_timings(ns, elapsed_original, elapsed_rtree_join, elapsed_rtree_in, ela
         plt.plot([e**2 for e in ns], elapsed_original, c="r", label="original")
     if len(elapsed_rtree_join) > 0:
         print(f"elapsed_rtree_join: {elapsed_rtree_join}")
-        plt.scatter([e**2 for e in ns], elapsed_rtree_join, c='g')
-        plt.plot([e**2 for e in ns], elapsed_rtree_join, c='g', label="rtree, join")
+        plt.scatter([e**2 for e in ns], elapsed_rtree_join, c="g")
+        plt.plot([e**2 for e in ns], elapsed_rtree_join, c="g", label="rtree, join")
     if len(elapsed_rtree_in) > 0:
         print(f"elapsed_rtree_in: {elapsed_rtree_in}")
-        plt.scatter([e**2 for e in ns], elapsed_rtree_in, c='b')
-        plt.plot([e**2 for e in ns], elapsed_rtree_in, c='b', label="rtree, in")
+        plt.scatter([e**2 for e in ns], elapsed_rtree_in, c="b")
+        plt.plot([e**2 for e in ns], elapsed_rtree_in, c="b", label="rtree, in")
     if len(elapsed_gfo) > 0:
         print(f"elapsed_gfo: {elapsed_gfo}")
-        plt.scatter([e**2 for e in ns], elapsed_gfo, c='m')
-        plt.plot([e**2 for e in ns], elapsed_gfo, c='m', label="geofileops.erase")
+        plt.scatter([e**2 for e in ns], elapsed_gfo, c="m")
+        plt.plot([e**2 for e in ns], elapsed_gfo, c="m", label="geofileops.erase")
     plt.xlabel("Number of geometries in p")
     plt.ylabel("execution time")
     plt.legend()
