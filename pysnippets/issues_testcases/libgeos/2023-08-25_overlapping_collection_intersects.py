@@ -1,3 +1,7 @@
+"""
+Reported in https://github.com/libgeos/geos/issues/948
+"""
+
 import shapely
 
 # Difference of geom: 1 polygon, geom: GeometryCollection of 2 overlapping polygons
@@ -15,6 +19,6 @@ print(f"is simple poly valid? {shapely.is_valid_reason(geom)}")
 print(f"is collection valid? {shapely.is_valid_reason(geom_collection)}")
 
 try:
-    result = shapely.difference(geom, geom_collection)
+    print(f"geom.intersects(geom_collection): {geom.intersects(geom_collection)}")
 except Exception as ex:
     print(f"Exception raised: {ex}")

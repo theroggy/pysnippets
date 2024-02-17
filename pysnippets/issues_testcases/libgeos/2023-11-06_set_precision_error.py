@@ -1,3 +1,7 @@
+"""
+Reported in https://github.com/libgeos/geos/issues/985
+"""
+
 import shapely
 
 poly = shapely.from_wkt(
