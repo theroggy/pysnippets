@@ -4,9 +4,6 @@ reportGeneralTypeIssues = false
 reportOptionalMemberAccess = false
 reportOptionalSubscript = false
 
-[tool.black]
-line-length = 88
-
 [tool.mypy]
 exclude = ["local_ignore"]
 
@@ -15,7 +12,7 @@ module = "cloudpickle.*,fiona.*,geopandas.*,matplotlib.*,osgeo.*,pygeos.*,pyogri
 ignore_missing_imports = true
 
 [tool.ruff]
-line-length = 88
+line-length = 100
 select = [
     # pyflakes
     "F",
