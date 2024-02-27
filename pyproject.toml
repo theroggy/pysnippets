@@ -3,6 +3,7 @@ exclude = ["local_ignore"]
 reportGeneralTypeIssues = false
 reportOptionalMemberAccess = false
 reportOptionalSubscript = false
+reportCallIssue = false
 
 [tool.mypy]
 exclude = ["local_ignore"]
