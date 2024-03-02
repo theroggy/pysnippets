@@ -20,9 +20,7 @@ datasource = None
 
 output_path = "/vsimem/output.gpkg"
 options = gdal.VectorTranslateOptions(geometryType="Point")
-gdal.VectorTranslate(
-    destNameOrDestDS=output_path, srcDS=input_path, options=options
-)
+gdal.VectorTranslate(destNameOrDestDS=output_path, srcDS=input_path, options=options)
 
 datasource = gdal.OpenEx(output_path)
 datasource_layer = datasource.GetLayer(0)
@@ -35,9 +33,7 @@ print(output_gdf)
 
 output2_path = "/vsimem/output2.shp"
 try:
-    gdal.VectorTranslate(
-        destNameOrDestDS=output2_path, srcDS=output_path
-    )
+    gdal.VectorTranslate(destNameOrDestDS=output2_path, srcDS=output_path)
 except Exception as ex:
     print(f"VectorTranslate with sqlite sql statemement: Exception raised: {ex}")
 
