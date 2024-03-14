@@ -31,3 +31,4 @@ print(f"{crs_undefined_unknown.to_wkt() == crs_undefined.to_wkt()=}")
 
 print(f"{crs_undefined_unknown_eng2.equals(crs_undefined)=}")
 print(f"{crs_undefined_unknown_eng2.to_wkt() == crs_undefined.to_wkt()=}")
+
