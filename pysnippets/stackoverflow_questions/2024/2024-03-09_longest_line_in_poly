@@ -1,0 +1,35 @@
+from typing import Tuple
+from shapely import LineString, box, Point
+
+
+def extrapolate_line_by_ratio(p1, p2, ratio):
+    a = p1
+    b = (p1[0] + ratio * (p2[0] - p1[0]), p1[1] + ratio * (p2[1] - p1[1]))
+    return LineString([a, b])
+
+
+def extrapolate_line_to_bounds(p1, p2, bounds: Tuple[float, float, float, float]):
+    minx, miny, maxx, maxy = bounds
+    if p1.x == p2.x:  # vertical line
+        extended_line = LineString([(p1.x, miny), (p1.x, maxy)])
+    elif p1.y == p2.y:  # horizonthal line
+        extended_line = LineString([(minx, p1.y), (maxx, p1.y)])
+    else:
+        # linear equation: y = k*x + m
+        k = (p2.y - p1.y) / (p2.x - p1.x)
+        m = p1.y - k * p1.x
+        y0 = k * minx + m
+        y1 = k * maxx + m
+        x0 = (miny - m) / k
+        x1 = (maxy - m) / k
+        points_on_boundary_lines = [
+            Point(minx, y0),
+            Point(maxx, y1),
+            Point(x0, miny),
+            Point(x1, maxy),
+        ]
+        bbox = box(minx, miny, maxx, maxy)
+        points_sorted_by_distance = sorted(points_on_boundary_lines, key=bbox.distance)
+        extended_line = LineString(points_sorted_by_distance[:2])
+
+    return extended_line
