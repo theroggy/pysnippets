@@ -2,7 +2,7 @@ name: pysnippets
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.11
   - pip
   # required
   - geofileops
@@ -15,6 +15,4 @@ dependencies:
   - rasterio
   - shapely
   # linting
-  - black=23
   - ruff
-  - pre-commit
