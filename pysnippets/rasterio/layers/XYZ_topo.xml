@@ -1,0 +1,19 @@
+<GDAL_WMS>
+  <Service name="TMS">
+    <ServerUrl>https://www.ngi.be/tiles/arcgis/rest/services/seamless_carto__default__3857__140/MapServer/tile/${z}/${y}/${x}</ServerUrl>
+    <SRS>EPSG:3857</SRS>
+  </Service>
+  <DataWindow>
+    <UpperLeftX>272000</UpperLeftX>
+    <UpperLeftY>6720000</UpperLeftY>
+    <LowerRightX>719000</LowerRightX>
+    <LowerRightY>6349000</LowerRightY>
+    <TileLevel>17</TileLevel>
+    <TileCountX>1</TileCountX>
+    <YOrigin>top</YOrigin>
+  </DataWindow>
+  <Projection>EPSG:3857</Projection>
+  <BlockSizeX>256</BlockSizeX>
+  <BlockSizeY>256</BlockSizeY>
+  <Cache />
+</GDAL_WMS>
