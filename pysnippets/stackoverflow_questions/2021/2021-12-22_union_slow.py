@@ -2,15 +2,11 @@ from pathlib import Path
 import geofileops as gfo
 import logging
 
-logging.basicConfig(level=logging.INFO)
-input_path = Path("C:/Temp/sample_geodata.gpkg")
-output_path = input_path.parent / "sample_geodata_union.gpkg"
+if __name__ == "__main__":
+    # Init logging to have progress logging
+    logging.basicConfig(level=logging.INFO)
 
-gfo.union(
-    input1_path=input_path,
-    input2_path=input_path,
-    output_path=output_path,
-    input1_layer="layer1_forest",
-    input2_layer="layer2_parcel",
-    force=True,
-)
+    input_path = Path("C:/Temp/input.gpkg")
+    output_path = input_path.parent / "output.gpkg"
+
+    gfo.union(input1_path=input_path, input2_path=None, output_path=output_path)
