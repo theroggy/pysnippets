@@ -17,8 +17,10 @@ points = shapely.from_wkt(
 voronoi = shapely.get_parts(shapely.voronoi_polygons(shapely.union_all(points)))
 clipped = shapely.intersection(voronoi, geom)
 symmdiff = shapely.union_all(clipped).symmetric_difference(geom)
-print(symmdiff.area)
-# 2.1684507522934382e-08
+print(f"{symmdiff=}")
+# output: symmdiff=<MULTIPOLYGON (...)>
+print(f"{shapely.set_precision(symmdiff, 1e-8)=}")
+# output: shapely.set_precision(symmdiff, 1e-8)=<MULTIPOLYGON EMPTY>
 
 figure, ax = plt.subplots()
 for voronoi_geom in voronoi:
