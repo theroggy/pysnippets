@@ -8,6 +8,7 @@ poly_with_hole = Polygon(
 )
 bug_poly = poly_with_hole.intersection(Point(5, 5).buffer(6))
 
+
 print(f"bug_poly.{bug_poly=}")
 for geom in bug_poly.geoms:
     print(f"bug_poly.{geom=}")
@@ -16,3 +17,10 @@ for geom in bug_poly.geoms:
 # bug_poly.geom=<LINESTRING (7 0, 3 0)>
 
 plot_polygon(bug_poly.geoms[0])
+
+# Extract only polygons from the collection
+import pygeoops
+
+buf_poly_extracted = pygeoops.collection_extract(bug_poly, 3)
+print(f"{buf_poly_extracted=}")
+# buf_poly_extracted=<POLYGON ((0 8.315, 0.011 8.333, 0.362 8.806, 0.757 9.243, 1.194 9.638, 1.66...>
