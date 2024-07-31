@@ -19,8 +19,11 @@ points = points.to_crs("EPSG:7856")
 points["point_id"] = np.arange(1, points.shape[0] + 1)
 
 # create voronoi polygons
-voronois = points.copy()
-voronois.geometry = points.geometry.voronoi_polygons()
+voronois = gpd.GeoDataFrame(geometry=points.voronoi_polygons(), crs=points.crs)
+# The order of the voronoi polygons is not guaranteed, so sjoin the attributes of the
+# points. Recover the index of the original points.
+voronois = voronois.sjoin(points, predicate="intersects").set_index("index_right")
+assert len(voronois) == len(points)
 
 # specify buffer in meters
 buffer = 10

@@ -1,6 +1,6 @@
 import geopandas as gpd
 
-df = gpd.read_file(r"C:\Temp\polygon-parcel.gpkg", ignore_geometry=True)
+df = gpd.read_file(r"C:\Temp\polygon_parcel\polygon-parcel.gpkg", ignore_geometry=True)
 gdf = gpd.GeoDataFrame(df)
 
 gdf.to_file("/vsimem/memoryfile_pyogrio.gpkg", engine="pyogrio")
