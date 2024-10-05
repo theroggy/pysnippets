@@ -12,7 +12,7 @@ circles = gpd.GeoDataFrame(
 )
 circles.geometry = circles.buffer(8)
 
-# Create a "flat" union of the input polygons
+# Create a "flat union" of the input polygons
 union_flat = gpd.GeoDataFrame(
     geometry=shapely.get_parts(
         shapely.polygonize(

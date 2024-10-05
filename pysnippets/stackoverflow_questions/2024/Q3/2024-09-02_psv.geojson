@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "2024-09-02_psv",
+"features": [
+{ "type": "Feature", "properties": { "col0": "123", "col1": "abc", "geom": { "type": "Point", "coordinates": [ 12, 34 ] } }, "geometry": { "type": "Point", "coordinates": [ 12.0, 34.0 ] } },
+{ "type": "Feature", "properties": { "col0": "456", "col1": "xyz", "geom": { "type": "Point", "coordinates": [ 56, 78 ] } }, "geometry": { "type": "Point", "coordinates": [ 56.0, 78.0 ] } }
+]
+}
