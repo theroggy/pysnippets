@@ -30,7 +30,8 @@ gdf2 = gpd.GeoDataFrame({
 )
 print(f"{len(gdf2)=}, with respectively {list(shapely.get_num_coordinates(gdf2.geometry))} coordinates")
 
-gdf3 = gdf2.overlay(gpd.GeoDataFrame(geometry=gdf1.boundary, crs=gdf1.crs), how='difference', keep_geom_type=False)
+gdf1_boundaries = gpd.GeoDataFrame(geometry=gdf1.boundary, crs=gdf1.crs)
+gdf3 = gdf2.overlay(gdf1_boundaries, how='difference')
 
 print(f"{len(gdf3)=}, with respectively {list(shapely.get_num_coordinates(gdf3.geometry))} coordinates")
 
