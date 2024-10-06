@@ -1,3 +1,7 @@
+"""
+https://gis.stackexchange.com/questions/486440/add-extra-vertices-on-linestring-where-they-cross-polygon-edges/486487?noredirect=1#comment793665_486487
+"""
+
 import geopandas as gpd
 import shapely
 from matplotlib import pyplot as plt
@@ -30,11 +34,17 @@ gdf2 = gpd.GeoDataFrame({
 )
 print(f"{len(gdf2)=}, with respectively {list(shapely.get_num_coordinates(gdf2.geometry))} coordinates")
 
-gdf1_boundaries = gpd.GeoDataFrame(geometry=gdf1.boundary, crs=gdf1.crs)
+# Split the lines in gdf2 by the boundaries of gdf1
+gdf1_boundaries = gdf1.set_geometry(gdf1.boundary)
 gdf3 = gdf2.overlay(gdf1_boundaries, how='difference')
-
 print(f"{len(gdf3)=}, with respectively {list(shapely.get_num_coordinates(gdf3.geometry))} coordinates")
+print(f"{gdf3=}")
 
-for i in range(len(gdf3)):
-  plot_line(gdf3.geometry[i], color=list(BASE_COLORS)[i])
+# Merge the split lines from multilinestrings to linestrings
+gdf4 = gdf3.set_geometry(gdf3.line_merge())
+print(f"{len(gdf4)=}, with respectively {list(shapely.get_num_coordinates(gdf4.geometry))} coordinates")
+print(f"{gdf4=}")
+
+for i in range(len(gdf4)):
+  plot_line(gdf4.geometry[i], color=list(BASE_COLORS)[i])
 plt.show()
