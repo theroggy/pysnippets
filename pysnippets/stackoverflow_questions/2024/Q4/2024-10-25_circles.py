@@ -19,7 +19,8 @@ def geodesic_point_buffer(lat, lon, distance):
     return transform(tfmr.transform, buf)
 
 # Read the csv file with data
-csv_path = Path(__file__).resolve().with_suffix(".csv")
+#csv_path = Path(__file__).resolve().with_suffix(".csv")
+csv_path = "https://raw.githubusercontent.com/theroggy/pysnippets/refs/heads/main/pysnippets/stackoverflow_questions/2024/Q4/2024-10-25_circles.csv"
 points_df = gpd.read_file(csv_path, autodetect_type=True)
 
 # Convert the points to circles by buffering them
