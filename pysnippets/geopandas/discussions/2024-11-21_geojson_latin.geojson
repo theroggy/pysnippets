@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "SP07___SP22_BACHES_A_EAUX",
+"features": [
+{ "type": "Feature", "properties": { "OBJECTID": 1, "Id": 0, "N": 5, "Nom": "SP09", "Fonçier": " ", "Phase": "Phase 1", "Date_": "15/06/23", "retenue": "", "PROJET_EN_COURS": "EXISTANTE" }, "geometry": { "type": "Point", "coordinates": [ 254448.773599997162819, 119554.822999998927116 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 16, "Id": 0, "N": 3, "Nom": "SP07", "Fonçier": " ", "Phase": "Phase 1", "Date_": "15/06/23", "retenue": "", "PROJET_EN_COURS": "EXISTANTE" }, "geometry": { "type": "Point", "coordinates": [ 254424.692699998617172, 121807.375199999660254 ] } }
+]
+}
