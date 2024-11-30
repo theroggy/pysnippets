@@ -10,8 +10,8 @@ dependencies:
   - matplotlib
   - pyarrow
   - pygeoops
-  - pyshp
-  - qgis
+  #- pyshp
+  #- qgis
   - rasterio
   - shapely
   # linting
