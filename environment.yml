@@ -8,7 +8,7 @@ dependencies:
   - geofileops
   - geopandas-base
   - matplotlib
-  - pyarrow
+  - pyarrow-core
   - pygeoops
   - pyogrio
   #- pyshp
