@@ -68,3 +68,23 @@ def test_gfo_layerinfo_performance(tmp_path):
     
     elapsed = perf_counter() - start
     warnings.warn(f"Elapsed time: {elapsed}")
+
+
+def test_gfo_intersection_performance(tmp_path):
+    gfo_uri = "https://github.com/geofileops/geofileops/raw/refs/heads/main"
+    remote_src = f"{gfo_uri}/tests/data/polygon-parcel.gpkg"
+    input1 = tmp_path / "input1.gpkg"
+    urllib.request.urlretrieve(remote_src, input1)
+    input2 = tmp_path / "input2.gpkg"
+    gfo.copy(input1, input2)
+
+    # Test!
+    output = tmp_path / "output.gpkg"
+    start = perf_counter()
+    
+    for i in range(100):
+        gfo.intersection(input1, input2, output)
+        output.unlink()
+    
+    elapsed = perf_counter() - start
+    warnings.warn(f"Elapsed time: {elapsed}")
