@@ -1,0 +1,13 @@
+name: geotests
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  # required
+  - geofileops
+  - geopandas-base
+  - pyarrow-core
+  - pyogrio
+  # tests
+  - pytest
