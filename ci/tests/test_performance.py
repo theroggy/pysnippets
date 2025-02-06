@@ -23,3 +23,4 @@ def test_gdal_vectortranslate_performance(tmp_path):
     
     elapsed = perf_counter() - start
     warnings.warn(f"Elapsed time: {elapsed}")
+
