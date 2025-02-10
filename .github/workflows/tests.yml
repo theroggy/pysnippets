@@ -4,12 +4,8 @@
 name: Tests
 
 on:
-  push:
-    branches: [ main, v0.** ]
   pull_request:
     branches: [ main, v0.** ]
-    paths:
-      - "ci/tests/"
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
