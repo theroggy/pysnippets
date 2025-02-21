@@ -17,11 +17,21 @@ def test_gdal_vectortranslate_performance(tmp_path):
     urllib.request.urlretrieve(remote_src, src)
 
     # Test!
+    import cProfile, pstats, io
+    from pstats import SortKey
+
     start = perf_counter()
     
-    for i in range(1000):
-        gdal.VectorTranslate(destNameOrDestDS=dst, srcDS=src)
-        dst.unlink()
+    with cProfile.Profile() as pr:
+        for i in range(1000):
+            gdal.VectorTranslate(destNameOrDestDS=dst, srcDS=src)
+            dst.unlink()
+
+        s = io.StringIO()
+        sortby = SortKey.CUMULATIVE
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats()
+        print(s.getvalue())
         
     elapsed = perf_counter() - start
     warnings.warn(f"Elapsed time: {elapsed}")
