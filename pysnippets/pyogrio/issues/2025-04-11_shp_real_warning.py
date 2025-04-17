@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import geodatasets
+import geofileops as gfo
 import geopandas as gpd
 from geopandas.testing import assert_geodataframe_equal
 
@@ -10,8 +11,11 @@ script_dir = Path(__file__).parent.resolve()
 
 path = geodatasets.get_path("nybb")
 
+print(gfo.get_layerinfo(path))
+
 print(f"Reading {path}")
 gdf = gpd.read_file(path)
+#gdf["Shape_Area"] = gdf["Shape_Area"].astype("float32")
 
 # Write to shapefile again
 for engine, use_arrow in [("fiona", None), ("pyogrio", False), ("pyogrio", True)]:
