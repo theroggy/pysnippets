@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from time import perf_counter
 
@@ -6,6 +7,7 @@ import geopandas as gpd
 from geofileops.util import _geoops_sql
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     bbox = (5, 53, 16, 64)
 
     # shp_path = r"X:\PerPersoon\PIEROG\Taken\2025\2025-04-22_perf_read_file\land-polygons-split-4326\land_polygons.shp"
