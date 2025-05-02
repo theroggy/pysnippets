@@ -3,7 +3,12 @@ import warnings
 from pathlib import PurePath
 from time import perf_counter
 
-import geofileops as gfo
+try:
+    import geofileops as gfo
+    geofileops_available = True
+except ImportError:
+    geofileops_available = False
+import pytest
 from osgeo import gdal
 
 gdal.UseExceptions()
@@ -54,6 +59,7 @@ def test_gdal_openex_performance(tmp_path):
     warnings.warn(f"Elapsed time: {elapsed}")
 
 
+@pytest.mark.skipif(not geofileops_available, reason="geofileops not available")
 def test_gfo_layerinfo_performance(tmp_path):
     gfo_uri = "https://github.com/geofileops/geofileops/raw/refs/heads/main"
     remote_src = f"{gfo_uri}/tests/data/polygon-parcel.gpkg"
@@ -70,6 +76,7 @@ def test_gfo_layerinfo_performance(tmp_path):
     warnings.warn(f"Elapsed time: {elapsed}")
 
 
+@pytest.mark.skipif(not geofileops_available, reason="geofileops not available")
 def test_gfo_intersection_performance(tmp_path):
     gfo_uri = "https://github.com/geofileops/geofileops/raw/refs/heads/main"
     remote_src = f"{gfo_uri}/tests/data/polygon-parcel.gpkg"
