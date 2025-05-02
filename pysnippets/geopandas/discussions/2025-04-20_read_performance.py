@@ -22,11 +22,16 @@ if __name__ == "__main__":
         )
 
     start = perf_counter()
+    gdf = gpd.read_file(gpkg_path, use_arrow=True)
+    print(f"Read time gpkg full: {perf_counter() - start:.2f} seconds")
+    print(f"Number of features: {len(gdf)}")
+
+    start = perf_counter()
     gdf = gpd.read_file(gpkg_path, bbox=bbox, use_arrow=True)
-    print(f"Read time: {perf_counter() - start:.2f} seconds")
+    print(f"Read time gpkg bbox: {perf_counter() - start:.2f} seconds")
     print(f"Number of features: {len(gdf)}")
 
     start = perf_counter()
     gdf = gpd.read_file(gpkg_subd_path, bbox=bbox, use_arrow=True)
-    print(f"Read time: {perf_counter() - start:.2f} seconds")
+    print(f"Read time gpkg bbox subd: {perf_counter() - start:.2f} seconds")
     print(f"Number of features: {len(gdf)}")
