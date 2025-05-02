@@ -33,7 +33,11 @@ jobs:
             os: windows-latest
             dev: false
             python: "3.12"
-            
+          - env: nightly-deps
+            os: ubuntu-latest
+            dev: false
+            python: "3.12"
+
     steps:
       - uses: actions/checkout@v4
 
