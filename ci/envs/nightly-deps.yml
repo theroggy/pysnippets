@@ -5,20 +5,20 @@ channels:
 dependencies:
   - python
   # required
-  #- cloudpickle
-  #- gdal
-  - geofileops
-  #- geopandas-base
-  #- libspatialite
+  - cloudpickle
+  - gdal
+  #- geofileops
+  - geopandas-base
+  - libspatialite
   # - nomkl  # Use openblas instead of mkl saves 600 MB. Linux OK, 50% slower on Windows and OSX!
-  #- numpy
-  #- packaging
-  #- pandas
-  #- psutil
-  #- pygeoops
-  #- pyogrio
-  #- pyproj
-  #- shapely >=2
+  - numpy
+  - packaging
+  - pandas
+  - psutil
+  - pygeoops
+  - pyogrio
+  - pyproj
+  - shapely >=2
   # optional
   #- simplification
   # testing
