@@ -1,3 +1,4 @@
+import pyogrio
 import geofileops as gfo
 
 
