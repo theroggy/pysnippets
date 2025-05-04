@@ -23,5 +23,5 @@ dependencies:
   #- simplification
   # testing
   - pytest
-  - pytest-cov
-  - pytest-xdist
+  #- pytest-cov
+  #- pytest-xdist
