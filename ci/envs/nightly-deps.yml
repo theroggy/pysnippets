@@ -6,7 +6,8 @@ dependencies:
   - python
   # required
   #- cloudpickle
-  - gdal
+  #- gdal
+  - libgdal-core
   #- geofileops
   #- geopandas-base
   #- libspatialite
