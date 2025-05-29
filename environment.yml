@@ -17,3 +17,5 @@ dependencies:
   - shapely
   # linting
   - ruff
+  # testing
+  - pytest
