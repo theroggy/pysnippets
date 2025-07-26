@@ -41,3 +41,11 @@ print(gdf.columns)
 # Rename duplicate column names by appending a suffix
 gdf.columns = suffix_duplicates(gdf.columns.tolist())
 print(gdf.columns)
+
+# Save the GeoDataFrame again to a shapefile... the new column names
+# will be shortened so they become unique within 10 characters.
+# Remark: saving a GeoDataFrame with non-unique column names will give an error!
+output_path = r"C:\Temp\trafic_de_l_herault_2023.shp"
+gdf.to_file(output_path)
+written_gdf = gpd.read_file(output_path)
+print(written_gdf.columns)
