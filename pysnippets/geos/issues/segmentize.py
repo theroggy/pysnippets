@@ -1,0 +1,20 @@
+import shapely
+import shapely.plotting as plotter
+from matplotlib import pyplot as plt
+
+wkt = "Polygon ((201339.625 216496.375, 201330.125 216502.125, 201334.625 216505.625, 201348.125 216514.375, 201339.01432334355195053 216508.46993179674609564, 201339.10899999999674037 216508.48199999998905696, 201340.86999999999534339 216508.17499999998835847, 201342.46199999999953434 216507.36400000000139698, 201343.7440000000060536 216506.1190000000060536, 201344.60300000000279397 216504.55100000000675209, 201344.96299999998882413 216502.79999999998835847, 201344.79000000000814907 216501.02100000000791624, 201344.75351527496241033 216500.93368024443043396, 201339.625 216496.375))"  # noqa: E501
+
+geom = shapely.from_wkt(wkt)
+assert geom.is_valid
+
+# Segmentize with 9.0 results in an empty geometry
+densified = shapely.segmentize(geom, 9.0)
+print(f"{densified.wkt=}")
+
+# Segmentize with 3.884847166975124 results in a ~collapsed geometry
+densified2 = shapely.segmentize(geom, 3.884847166975124)
+print(f"{densified2.wkt=}")
+
+plotter.plot_polygon(geom, edgecolor="black", facecolor="none", linewidth=4)
+plotter.plot_polygon(densified2, edgecolor="red", facecolor="none", linewidth=1)
+plt.show()
