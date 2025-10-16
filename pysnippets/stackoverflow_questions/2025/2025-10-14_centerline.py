@@ -25,6 +25,12 @@ with rio.open(path) as src:
 
     gdf = gpd.GeoDataFrame(geometry=polygons, crs=src.crs)
 
+# Pixels/polygons that just touch at the corners should be considered connected as well
+# for the centerline calculation. Hence, we buffer and dissolve the polygons first.
+# Use a "mitre" join style for the buffer to avoid introducing too many points.
+gdf["geometry"] = gdf.buffer(0.2, join_style="mitre")
+gdf = gdf.dissolve().explode()
+
 # Calculate the centerline.
 centerlines_gdf = gdf.copy()
 centerlines_gdf["geometry"] = pygeoops.centerline(gdf["geometry"])
