@@ -13,7 +13,7 @@ dependencies:
   - pyogrio
   #- pyshp
   #- qgis
-  - rasterio
+  #- rasterio
   - shapely
   # linting
   - ruff
