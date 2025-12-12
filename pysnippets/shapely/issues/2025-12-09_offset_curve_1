@@ -1,0 +1,26 @@
+import numpy as np
+import shapely.plotting
+from matplotlib import pyplot as plt
+from shapely import LineString
+
+outside = LineString(
+    np.array(
+        [
+            [50.0, 0.0],
+            [100.0, 0.0],
+            [100.0, -100.0],
+            [0.0, -100.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [50.0, 0.0],
+        ]
+    )
+)
+print(f"{outside.is_valid=}")
+outside = shapely.make_valid(outside)
+print(f"{outside.is_valid=}")
+inside = outside.offset_curve(-5)
+
+shapely.plotting.plot_line(outside, color="blue")
+shapely.plotting.plot_line(inside, color="red")
+plt.show()
