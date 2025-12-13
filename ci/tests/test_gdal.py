@@ -34,9 +34,8 @@ def test_gdal_st_minx():
     src_ds = None
 
     # Execute an SQL statement with ST_MinX on the file
-    # sql_stmt = f'SELECT ST_MinX(CastToXYZ(geom)) AS minx FROM "src_lyr"'
-    sql_stmt = f'SELECT ST_MinX(geom) AS minx FROM "src_lyr"'
-
+    sql_stmt = 'SELECT ST_MinX(CastToXYZ(geom)) AS minx FROM "src_lyr"'
+    
     output_path = tmp_dir / "test_minx.gpkg"
     options = gdal.VectorTranslateOptions(SQLStatement=sql_stmt)
     output_ds = gdal.VectorTranslate(destNameOrDestDS=output_path, srcDS=input_path, options=options)
