@@ -41,9 +41,13 @@ def test_gdal_st_minx():
     output_ds = gdal.VectorTranslate(destNameOrDestDS=output_path, srcDS=input_path, options=options)
     output_ds = None
 
+    # Check the results
     output_ds = gdal.OpenEx(output_path, nOpenFlags=gdal.OF_VECTOR)
     output_layer = output_ds.GetLayer()
     layer_defn = output_layer.GetLayerDefn()
-    print(f'{layer_defn.GetFieldDefn(0).GetName()} type: {layer_defn.GetFieldDefn(0).GetTypeName()}')
-    for feature in output_layer:
-        print(f"minx: {feature.GetField('minx')}")
+
+    output = f'{layer_defn.GetFieldDefn(0).GetName()} type: {layer_defn.GetFieldDefn(0).GetTypeName()}'
+    for idx, feature in enumerate(output_layer):
+        output += f"minx ({idx}): {feature.GetField('minx')}; "
+
+    raise AssertionError(output)
