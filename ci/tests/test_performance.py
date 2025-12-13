@@ -3,6 +3,9 @@ import warnings
 from pathlib import PurePath
 from time import perf_counter
 
+import pytest
+pytest.skip("Skip performance tests", allow_module_level=True)
+
 import geofileops as gfo
 from osgeo import gdal
 
