@@ -6,7 +6,8 @@ from osgeo import gdal, ogr
 ogr.UseExceptions()
 
 
-def test_gdal_st_minx():
+@pytest.mark.parametrize("st_minx_function", ["ST_MinX", "MbrMinX"])
+def test_gdal_st_minx(st_minx_function):
     # Create input test file with an empty geometry
     tmp_dir = Path(tempfile.gettempdir())
     input_path = tmp_dir / "test.gpkg"
@@ -34,7 +35,7 @@ def test_gdal_st_minx():
     src_ds = None
 
     # Execute an SQL statement with ST_MinX on the file
-    sql_stmt = 'SELECT ST_MinX(CastToXYZ(geom)) AS minx FROM "src_lyr"'
+    sql_stmt = f'SELECT {st_minx_function}(CastToXYZ(geom)) AS minx FROM "src_lyr"'
     
     output_path = tmp_dir / "test_minx.gpkg"
     options = gdal.VectorTranslateOptions(SQLStatement=sql_stmt)
