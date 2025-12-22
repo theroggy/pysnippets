@@ -1,0 +1,13 @@
+import numpy as np
+import shapely
+from shapely.wkt import loads
+
+rawp = loads("POLYGON ((5.757315768570891 477.44961942445883, 90.77830516299935 543.8752973639498, 248.07849054369257 342.5402442964279, 464.48223238911964 241.62951691200377, 413.06565212535094 131.36631050791692, 416.62730100296994 126.80760789705967, 365.4518827373675 17.06157503979785, 361.89023385974843 21.620277650655183, 32.689759002847666 442.9776645778203, 5.757315768570891 477.44961942445883))")
+
+def simplify(poly):
+    mindist = 5
+    with np.errstate(over="raise", divide="raise", invalid="raise"):
+        return poly.simplify(np.sqrt(mindist), preserve_topology=True)
+
+simplify(rawp)  # fails
+simplify(shapely.set_precision(rawp, 1e-8))  # fine
