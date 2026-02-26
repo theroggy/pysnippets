@@ -9,4 +9,4 @@ if __name__ == "__main__":
     input2_path = r"C:\Temp\prc2023\prc2023.gpkg"
     output_path = r"C:\Temp\polygon_parcel\output_intersection.gpkg"
 
-    gfo.intersection(input1_path, input2_path, output_path)
+    gfo.intersection(input1_path, input2_path, output_path, force=True)
