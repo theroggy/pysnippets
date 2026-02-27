@@ -1,12 +1,15 @@
 import os
 import tempfile
 from pathlib import Path
+
+import pytest
 from osgeo import gdal, ogr
 
 ogr.UseExceptions()
 
 
-def test_gdal_st_minx():
+@pytest.mark.parametrize("st_minx_function", ["ST_MinX", "MbrMinX"])
+def test_gdal_st_minx(st_minx_function):
     # Create input test file with an empty geometry
     tmp_dir = Path(tempfile.gettempdir())
     input_path = tmp_dir / "test.gpkg"
@@ -34,16 +37,20 @@ def test_gdal_st_minx():
     src_ds = None
 
     # Execute an SQL statement with ST_MinX on the file
-    sql_stmt = f'SELECT ST_MinX(CastToXYZ(geom)) AS minx FROM "src_lyr"'
-
+    sql_stmt = f'SELECT {st_minx_function}(CastToXYZ(geom)) AS minx FROM "src_lyr"'
+    
     output_path = tmp_dir / "test_minx.gpkg"
     options = gdal.VectorTranslateOptions(SQLStatement=sql_stmt)
     output_ds = gdal.VectorTranslate(destNameOrDestDS=output_path, srcDS=input_path, options=options)
     output_ds = None
 
+    # Check the results
     output_ds = gdal.OpenEx(output_path, nOpenFlags=gdal.OF_VECTOR)
     output_layer = output_ds.GetLayer()
     layer_defn = output_layer.GetLayerDefn()
-    print(f'{layer_defn.GetFieldDefn(0).GetName()} type: {layer_defn.GetFieldDefn(0).GetTypeName()}')
-    for feature in output_layer:
-        print(f"minx: {feature.GetField('minx')}")
+
+    output = f'{layer_defn.GetFieldDefn(0).GetName()} type: {layer_defn.GetFieldDefn(0).GetTypeName()}'
+    for idx, feature in enumerate(output_layer):
+        output += f"minx ({idx}): {feature.GetField('minx')}; "
+
+    raise AssertionError(output)
