@@ -1,3 +1,5 @@
+"""GDAL issue: https://github.com/OSGeo/gdal/issues/8587"""
+
 from osgeo import gdal
 import geopandas as gpd
 
